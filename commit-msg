@@ -1,0 +1,27 @@
+#!/bin/sh
+#
+# A hook script to check for conventional commit message format.
+
+# only run if a config exists
+if [ ! -f ./.conform.yaml ]
+then
+  echo "No .conform.yaml file found. Ignoring conform."
+  exit 0
+fi
+
+# there's a config, but no command
+if [ -z "$(which conform)" ]
+then
+  echo "'conform' executable not found. Install it and make sure it is in your PATH."
+  echo "You can install it with 'go get -u github.com/autonomy/conform'."
+  exit 1
+fi
+
+# there's a command, but it doesn't support the commit-msg hook
+if [ -z "$(conform enforce -h | awk '$1 == "--commit-msg-file"')" ]
+then
+  echo "Installed version of conform does not support commit-msg hooks. Please update."
+  exit 1
+fi
+
+conform enforce --commit-msg-file $1

@@ -1,0 +1,13 @@
+policies:
+  - type: conventionalCommit
+    spec:
+      types:
+        - "chore"
+        - "docs"
+        - "feat"
+        - "fix"
+        - "refactor"
+        - "style"
+        - "test"
+      scopes:
+        - "*"
